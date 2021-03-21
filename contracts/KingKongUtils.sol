@@ -39,14 +39,21 @@ contract KingKongUtils {
 	function payMembership(
 		uint256 payment, Member[] memory lineage) internal {
 		bool ok = true;
+		uint256 totalPayment = payment;
+		uint256 paid;
 		for (uint256 i = lineage.length-1; ok; i--) {
 			payment /= 2; // should not need safemath
 			members[lineage[i].memberAddress].balance += payment;
+			paid += payment;
 			// should not need safemath because of scarcity of ether
 			if (i==0) {
 				ok = !ok; //hack for reverse for-loop
 			}
 		}
+		uint256 remaining = totalPayment - paid; // won't underflow
+		// parent gets a bonus
+		members[lineage[0].memberAddress].balance += remaining;
+		// unchecked but in KingKong will always be defined
 	}
 
 	function fillLineage(
