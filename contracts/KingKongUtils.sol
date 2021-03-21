@@ -1,13 +1,21 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.0;
 
-contract KingKongUtils {
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
-	mapping (address => Member) internal members;
-	uint256 internal height;
-	address[] internal rowA;
-	address[] internal rowB;
-	bool internal usingRowB;
+contract KingKongUtils {
+	using SafeMath for uint256;
+
+	mapping (address => Member) private members;
+	uint256 private height;
+	address[] private rowA;
+	address[] private rowB;
+	bool private usingRowB;
+
+	constructor(address firstMember) {
+		height = 1;
+		putParentBackInRow(firstMember);
+	}
 
 	struct Member {
 		address memberAddress;
@@ -125,12 +133,27 @@ contract KingKongUtils {
 		rowB.push(member);
 	}
 
-	function addMember(address parent) internal {
+	function addMember(address member, address parent) internal {
 		// this is checked in that 
 		// parent is necessarily nontrivial in KingKong
-		address member = msg.sender;
+		// except for first member 
 		address[2] memory noChildrenYet;
 		members[member] = Member(
 			member, 0, parent, noChildrenYet);	
+	}
+
+	function isNotMember() internal view returns(bool) {
+		return members[msg.sender].memberAddress == address(0);
+	}
+
+	function _getBalance(address member) internal view returns(uint256) {
+		return members[member].balance;
+	}
+
+	function _withdraw(uint256 amount, address payable recipient) internal {
+		members[msg.sender].balance = 
+			members[msg.sender].balance.sub(amount);
+		(bool success,) = recipient.call{value: amount}("");
+		require(success, "withdraw failed!");
 	}
 }
