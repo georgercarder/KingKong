@@ -16,30 +16,20 @@ contract KingKongUtils {
 		address[2] children;
 	}
 
-
 	function payMembershipAndUpdateStorage() internal returns(address) {
 		address parent = getParentFromRow();
 		Member[] memory lineage = fillLineage(parent);
-		// pay membership
-		payMembership(msg.value, lineage);
-
-		// accounting of rows
-		Member storage parentAsMember = members[parent];
-		if (parentAsMember.children[0] == address(0)) {
-			parentAsMember.children[0] = msg.sender;	
-			putParentBackInRow(parent);
-		} else {
-			parentAsMember.children[1] = msg.sender;	
-		}
-		putNewMemberInRow(msg.sender);
+		payMembership(lineage);
+		putNewMemberAsChild(parent);
+		putNewMemberInRow();
 		updateActiveRow();
 		return parent;
 	}
 
-	function payMembership(
-		uint256 payment, Member[] memory lineage) internal {
+	function payMembership(Member[] memory lineage) internal {
 		bool ok = true;
-		uint256 totalPayment = payment;
+		uint256 totalPayment = msg.value;
+		uint256 payment = totalPayment;
 		uint256 paid;
 		for (uint256 i = lineage.length-1; ok; i--) {
 			payment /= 2; // should not need safemath
@@ -114,8 +104,20 @@ contract KingKongUtils {
 		}
 	}
 
-	function putNewMemberInRow(address member) internal {
+	function putNewMemberAsChild(address parent) internal {
+		address newMember = msg.sender;
+		Member storage parentAsMember = members[parent];
+		if (parentAsMember.children[0] == address(0)) {
+			parentAsMember.children[0] = newMember;	
+			putParentBackInRow(parent);
+		} else {
+			parentAsMember.children[1] = newMember;	
+		}
+	}
+
+	function putNewMemberInRow() internal {
 		// recall that the new member is put in the inactive row
+		address member = msg.sender;
 		if (usingRowB) {
 			rowA.push(member);
 			return;
