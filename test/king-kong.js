@@ -26,8 +26,8 @@ describe("KingKong", function() {
     } // smoke test
 
     let afterBalance = await kingKong.getBalance(king.address);
-    afterBalance = parseInt(afterBalance);
-    console.log(afterBalance, "afterKing");
+    afterBalance = parseInt(afterBalance);//afterBalance.div(oneEth()));
+    console.log(afterBalance, "ETH afterKing");
 
     for (let i = 0; i < bound; i++) {
 	let bal = await kingKong.getBalance(accounts[2+i].address);
