@@ -26,7 +26,7 @@ contract KingKong is KingKongUtils {
 		// multiple joins affect accounting so we guard against it 
 		address parent = payMembershipAndUpdateStorage();
 		// new member
-		addMember(msg.sender, parent);
+		addMember(parent);
 	}
 	
 	function getBalance(address member) external view returns(uint256) {

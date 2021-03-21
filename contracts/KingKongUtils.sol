@@ -26,7 +26,7 @@ contract KingKongUtils {
 		return parent;
 	}
 
-	function payMembership(Member[] memory lineage) internal {
+	function payMembership(Member[] memory lineage) private {
 		bool ok = true;
 		uint256 totalPayment = msg.value;
 		uint256 payment = totalPayment;
@@ -48,7 +48,7 @@ contract KingKongUtils {
 
 	function fillLineage(
 		address parent
-	) internal view returns(Member[] memory) {
+	) private view returns(Member[] memory) {
 		bool filling = true;
 		Member memory member;
 		Member[] memory lineage = new Member[](height);
@@ -68,7 +68,7 @@ contract KingKongUtils {
 		return lineage;
 	}
 
-	function getParentFromRow() internal returns(address) {
+	function getParentFromRow() private returns(address) {
 		// unchecked but as used in KingKong, rows should
 		// not have to be checked
 		address parent;
@@ -82,7 +82,7 @@ contract KingKongUtils {
 		return parent;
 	}
 
-	function putParentBackInRow(address parent) internal {
+	function putParentBackInRow(address parent) private {
 		if (usingRowB) {
 			rowB.push(parent);
 			return;
@@ -90,7 +90,7 @@ contract KingKongUtils {
 		rowA.push(parent);	
 	}
 
-	function updateActiveRow() internal {
+	function updateActiveRow() private {
 		if (usingRowB) {
 			if (rowB.length == 0) {
 				usingRowB = !usingRowB;
@@ -104,7 +104,7 @@ contract KingKongUtils {
 		}
 	}
 
-	function putNewMemberAsChild(address parent) internal {
+	function putNewMemberAsChild(address parent) private {
 		address newMember = msg.sender;
 		Member storage parentAsMember = members[parent];
 		if (parentAsMember.children[0] == address(0)) {
@@ -115,7 +115,7 @@ contract KingKongUtils {
 		}
 	}
 
-	function putNewMemberInRow() internal {
+	function putNewMemberInRow() private {
 		// recall that the new member is put in the inactive row
 		address member = msg.sender;
 		if (usingRowB) {
@@ -125,9 +125,10 @@ contract KingKongUtils {
 		rowB.push(member);
 	}
 
-	function addMember(address member, address parent) internal {
+	function addMember(address parent) internal {
 		// this is checked in that 
 		// member is msg.sender and parent is necessarily nontrivial
+		address member = msg.sender;
 		address[2] memory noChildrenYet;
 		members[member] = Member(
 			member, 0, parent, noChildrenYet);	
