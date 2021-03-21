@@ -77,7 +77,7 @@ contract KingKongUtils {
 			rowB.pop();
 			return parent;
 		}
-		parent = rowA[rowB.length-1];	
+		parent = rowA[rowA.length-1];	
 		rowA.pop();
 		return parent;
 	}
