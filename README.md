@@ -1,3 +1,5 @@
+DO NOT USE IN PRODUCTION. NOT AUDITED. LIKELY NOT SAFE.
+
 If you ever need anything please don't
 
 hesitate to ask someone else first
@@ -16,3 +18,4 @@ into the dirt
 
 
 ** a really stupid pyramid scheme **
+
