@@ -20,8 +20,9 @@ contract KingKongUtils {
 	}
 
 
-	function payMembershipAndUpdateStorage(address parent) internal {
-		Member[] memory lineage = fillLineage(parent);
+	function payMembershipAndUpdateStorage(uint256 debugIdx, address parent) internal {
+		Member[] memory lineage = fillLineage(debugIdx, parent);
+		if (debugIdx < 2) {
 		// pay membership
 		payMembership(msg.value, lineage);
 
@@ -35,6 +36,7 @@ contract KingKongUtils {
 		}
 		updateActiveRow();
 		putNewMemberInRow(msg.sender);
+		}
 	}
 
 	function payMembership(
@@ -51,6 +53,7 @@ contract KingKongUtils {
 	}
 
 	function fillLineage(
+		uint256 debugIdx,
 		address parent
 	) internal view returns(Member[] memory) {
 		bool filling = true;
@@ -63,6 +66,8 @@ contract KingKongUtils {
 			idx++;
 			if (member.parent == address(0)) {
 				filling = false;
+			} else {
+				parent = member.parent;
 			}
 		}
 		return lineage;
