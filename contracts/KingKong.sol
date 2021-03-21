@@ -25,7 +25,7 @@ contract KingKong is KingKongUtils {
 							"already a member!");
 		// multiple joins affect accounting so we guard against it 
 		address parent = payMembershipAndUpdateStorage();
-		// new member, points to parent
+		// msg.sender is new member, points to parent
 		addMember(parent); 
 	}
 	
