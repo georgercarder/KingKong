@@ -6,6 +6,7 @@ describe("KingKong", function() {
     	let ret = ethers.BigNumber.from(10);
     	return ret.pow(18);
     }
+    let zero = ethers.BigNumber.from(0);
     const accounts = await ethers.getSigners();
     let king = accounts[1];
     const KingKong = await ethers.getContractFactory("KingKong");
@@ -32,7 +33,10 @@ describe("KingKong", function() {
 	let bal = await kingKong.getBalance(accounts[2+i].address);
 	console.log(parseInt(bal));
     }
-    
+    let balBefore = await king.getBalance();
+    await kingKong.connect(king).withdraw(afterBalance.toString(), king.address);
+    expect(await kingKong.getBalance(king.address)).to.equal(zero);
+    expect(await king.getBalance()).to.not.equal(balBefore);
 
     //let testWall = await kingKong.testWall();
 	  //console.log({testWall});
