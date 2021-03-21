@@ -1,9 +1,12 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.0;
 
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 import "./KingKongUtils.sol";
 
 contract KingKong is KingKongUtils {
+	using SafeMath for uint256;
 
 	constructor(address firstMember) {
 		address[2] memory noChildrenYet;
@@ -35,11 +38,11 @@ contract KingKong is KingKongUtils {
 		putNewMemberInRow(msg.sender);
 	}
 
-	function withdraw(uint amount, address recipient) external {
-		require(members[msg.sender] != Member(0), "not a member!");
+	function withdraw(uint amount, address payable recipient) external {
+		require(members[msg.sender].memberAddress != address(0), "not a member!");
 		members[msg.sender].balance = 
 			members[msg.sender].balance.sub(amount);
-		(bool success, ) = recipient.call.value(amount)("");	
+		(bool success,) = recipient.call{value: amount}("");
 		require(success, "withdraw failed!");
 	}
 }

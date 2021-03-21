@@ -1,8 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.0;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
-
 contract KingKongUtils {
 	uint256 public constant membershipFee = 1 ether;
 	mapping (address => Member) internal members;
