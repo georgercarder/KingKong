@@ -33,8 +33,8 @@ contract KingKongUtils {
 		} else {
 			parentAsMember.children[1] = msg.sender;	
 		}
-		updateActiveRow();
 		putNewMemberInRow(msg.sender);
+		updateActiveRow();
 	}
 
 	function payMembership(
