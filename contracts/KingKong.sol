@@ -37,6 +37,10 @@ contract KingKong is KingKongUtils {
 		updateActiveRow();
 		putNewMemberInRow(msg.sender);
 	}
+	
+	function getBalance(address member) external view returns(uint256) {
+		return members[member].balance;
+	}
 
 	function withdraw(uint amount, address payable recipient) external {
 		require(members[msg.sender].memberAddress != address(0), "not a member!");
