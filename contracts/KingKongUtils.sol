@@ -59,6 +59,8 @@ contract KingKongUtils {
 		while (filling) {
 			member = members[parent];
 			lineage[idx] = member;
+			// unchecked but as used in KingKong,
+			// the height bounds the lineage
 			idx++;
 			if (member.parent == address(0)) {
 				filling = false;
@@ -70,6 +72,8 @@ contract KingKongUtils {
 	}
 
 	function getParentFromRow() internal returns(address) {
+		// unchecked but as used in KingKong, rows should
+		// not have to be checked
 		address parent;
 		if (usingRowB) {
 			parent = rowB[rowB.length-1];	
