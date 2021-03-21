@@ -24,8 +24,7 @@ contract KingKong is KingKongUtils {
 		require(members[msg.sender].memberAddress == address(0), 
 							"already a member!");
 		// multiple joins affect accounting so we guard against it 
-		address parent = getParentFromRow();
-		payMembershipAndUpdateStorage(parent);
+		address parent = payMembershipAndUpdateStorage();
 		// new member
 		addMember(msg.sender, parent);
 	}

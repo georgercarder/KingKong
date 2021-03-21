@@ -17,7 +17,8 @@ contract KingKongUtils {
 	}
 
 
-	function payMembershipAndUpdateStorage(address parent) internal {
+	function payMembershipAndUpdateStorage() internal returns(address) {
+		address parent = getParentFromRow();
 		Member[] memory lineage = fillLineage(parent);
 		// pay membership
 		payMembership(msg.value, lineage);
@@ -32,6 +33,7 @@ contract KingKongUtils {
 		}
 		putNewMemberInRow(msg.sender);
 		updateActiveRow();
+		return parent;
 	}
 
 	function payMembership(
