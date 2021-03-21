@@ -17,12 +17,12 @@ contract KingKong is KingKongUtils {
 		usingRowB = true;
 	}
 
-	function join(uint256 debugIdx) payable external {
+	function join() payable external {
 		require(msg.value == membershipFee, "insufficient payment.");
 		require(members[msg.sender].memberAddress == address(0), "already a member!");
 		// multiple joins affect accounting so we guard against it 
 		address parent = getParentFromRow();
-		payMembershipAndUpdateStorage(debugIdx, parent);
+		payMembershipAndUpdateStorage(parent);
 		// new member
 		addMember(msg.sender, parent);
 	}
