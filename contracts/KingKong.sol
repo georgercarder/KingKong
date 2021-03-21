@@ -23,22 +23,9 @@ contract KingKong is KingKongUtils {
 		// have not analyzed what can happen if member have multiple entries
 		// so we restrict it so as not to allow pathologies
 		address parent = getParentFromRow();
-		Member[] memory lineage = fillLineage(parent);
-		// pay membership
-		payMembership(msg.value, lineage);
 		// new member
 		addMember(msg.sender, parent);
-
-		// accounting of rows
-		Member storage parentAsMember = members[parent];
-		if (parentAsMember.children[0] == address(0)) {
-			parentAsMember.children[0] = msg.sender;	
-			putParentBackInRow(parent);
-		} else {
-			parentAsMember.children[1] = msg.sender;	
-		}
-		updateActiveRow();
-		putNewMemberInRow(msg.sender);
+		payMembershipAndUpdateStorage(parent);
 	}
 	
 	function getBalance(address member) external view returns(uint256) {

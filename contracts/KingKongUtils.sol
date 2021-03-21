@@ -17,6 +17,24 @@ contract KingKongUtils {
 		address[2] children;
 	}
 
+
+	function payMembershipAndUpdateStorage(address parent) internal {
+		Member[] memory lineage = fillLineage(parent);
+		// pay membership
+		payMembership(msg.value, lineage);
+
+		// accounting of rows
+		Member storage parentAsMember = members[parent];
+		if (parentAsMember.children[0] == address(0)) {
+			parentAsMember.children[0] = msg.sender;	
+			putParentBackInRow(parent);
+		} else {
+			parentAsMember.children[1] = msg.sender;	
+		}
+		updateActiveRow();
+		putNewMemberInRow(msg.sender);
+	}
+
 	function payMembership(
 		uint256 payment, Member[] memory lineage) internal {
 		for (uint256 i = lineage.length-1; i > 0; i--) {
