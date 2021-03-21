@@ -34,8 +34,6 @@ contract KingKong is KingKongUtils {
 	}
 
 	function withdraw(uint256 amount, address payable recipient) external {
-		require(members[msg.sender].memberAddress != address(0), 
-							"not a member!");
 		members[msg.sender].balance = 
 			members[msg.sender].balance.sub(amount);
 		(bool success,) = recipient.call{value: amount}("");
