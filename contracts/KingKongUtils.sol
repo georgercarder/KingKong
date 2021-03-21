@@ -3,9 +3,6 @@ pragma solidity ^0.7.0;
 
 contract KingKongUtils {
 
-	uint256 public testWall; // TODO DELETE
-	
-	uint256 public constant membershipFee = 1 ether;
 	mapping (address => Member) internal members;
 	uint256 internal height;
 	address[] internal rowA;
@@ -43,7 +40,7 @@ contract KingKongUtils {
 		for (uint256 i = lineage.length-1; ok; i--) {
 			payment /= 2; // should not need safemath
 			members[lineage[i].memberAddress].balance += payment;
-			// should not need safemath because of scarcity of ether	
+			// should not need safemath because of scarcity of ether
 			if (i==0) {
 				ok = !ok; //hack for reverse for-loop
 			}
