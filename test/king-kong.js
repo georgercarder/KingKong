@@ -18,17 +18,24 @@ describe("KingKong", function() {
     let pmt = oneEth();
 	  console.log({pmt});
     //await kingKong.connect(accounts[2]).join({value: pmt}); // smoke test
-    let bound = 3; // fails for 3
+    let bound = 6; // passes for 18
     for (let i = 0; i < bound; i++) {
 	console.log(i);
 	await kingKong.connect(accounts[2+i]).join({value: pmt});
     } // smoke test
 
     let afterBalance = await kingKong.getBalance(king.address);
-    console.log({afterBalance});
+    afterBalance = parseInt(afterBalance);
+    console.log(afterBalance, "afterKing");
 
-    let testWall = await kingKong.testWall();
-	  console.log({testWall});
+    for (let i = 0; i < bound; i++) {
+	let bal = await kingKong.getBalance(accounts[2+i].address);
+	console.log(parseInt(bal));
+    }
+    
+
+    //let testWall = await kingKong.testWall();
+	  //console.log({testWall});
 
     //expect(await greeter.greet()).to.equal("Hello, world!");
 
