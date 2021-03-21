@@ -127,7 +127,7 @@ contract KingKongUtils {
 
 	function addMember(address parent) internal {
 		// this is checked in that 
-		// member is msg.sender and parent is necessarily nontrivial
+		// parent is necessarily nontrivial in KingKong
 		address member = msg.sender;
 		address[2] memory noChildrenYet;
 		members[member] = Member(
