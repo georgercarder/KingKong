@@ -20,12 +20,11 @@ contract KingKong is KingKongUtils {
 	function join() payable external {
 		require(msg.value == membershipFee, "insufficient payment.");
 		require(members[msg.sender].memberAddress == address(0), "already a member!");
-		// have not analyzed what can happen if member have multiple entries
-		// so we restrict it so as not to allow pathologies
+		// multiple joins affect accounting so we guard against it 
 		address parent = getParentFromRow();
 		// new member
-		addMember(msg.sender, parent);
 		payMembershipAndUpdateStorage(parent);
+		addMember(msg.sender, parent);
 	}
 	
 	function getBalance(address member) external view returns(uint256) {
