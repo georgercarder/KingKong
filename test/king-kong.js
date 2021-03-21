@@ -18,7 +18,7 @@ describe("KingKong", function() {
     let pmt = oneEth();
 	  console.log({pmt});
     //await kingKong.connect(accounts[2]).join({value: pmt}); // smoke test
-    let bound = 6; // passes for 18
+    let bound = 14; // looks like correct values for 14. passes for 18
     for (let i = 0; i < bound; i++) {
 	console.log(i);
 	await kingKong.connect(accounts[2+i]).join({value: pmt});
