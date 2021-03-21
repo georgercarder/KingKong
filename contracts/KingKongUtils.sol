@@ -12,16 +12,16 @@ contract KingKongUtils {
 	address[] private rowB;
 	bool private usingRowB;
 
-	constructor(address firstMember) {
-		height = 1;
-		putParentBackInRow(firstMember);
-	}
-
 	struct Member {
 		address memberAddress;
 		uint256 balance;
 		address parent;
 		address[2] children;
+	}
+
+	constructor(address firstMember) {
+		height = 1;
+		putParentBackInRow(firstMember);
 	}
 
 	function payMembershipAndUpdateStorage() internal returns(address) {
